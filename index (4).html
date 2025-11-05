@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Dispensary System</title>
+    <style>
+        :root {
+            --color-primary: rgba(33, 128, 141, 1);
+            --color-primary-hover: rgba(29, 116, 128, 1);
+            --color-primary-active: rgba(26, 104, 115, 1);
+            --color-background: rgba(252, 252, 249, 1);
+            --color-surface: rgba(255, 255, 253, 1);
+            --color-text: rgba(19, 52, 59, 1);
+            --color-text-secondary: rgba(98, 108, 113, 1);
+            --color-border: rgba(94, 82, 64, 0.2);
+            --color-card-border: rgba(94, 82, 64, 0.12);
+            --color-secondary: rgba(94, 82, 64, 0.12);
+            --color-secondary-hover: rgba(94, 82, 64, 0.2);
+            --color-success: rgba(33, 128, 141, 1);
+            --color-error: rgba(192, 21, 47, 1);
+            --color-warning: rgba(168, 75, 47, 1);
+            --color-btn-primary-text: rgba(252, 252, 249, 1);
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-background: rgba(31, 33, 33, 1);
+                --color-surface: rgba(38, 40, 40, 1);
+                --color-text: rgba(245, 245, 245, 1);
+                --color-text-secondary: rgba(167, 169, 169, 0.7);
+                --color-primary: rgba(50, 184, 198, 1);
+                --color-primary-hover: rgba(45, 166, 178, 1);
+                --color-primary-active: rgba(41, 150, 161, 1);
+                --color-border: rgba(119, 124, 124, 0.3);
+                --color-card-border: rgba(119, 124, 124, 0.2);
+                --color-secondary: rgba(119, 124, 124, 0.15);
+                --color-secondary-hover: rgba(119, 124, 124, 0.25);
+                --color-error: rgba(255, 84, 89, 1);
+                --color-success: rgba(50, 184, 198, 1);
+                --color-warning: rgba(230, 129, 97, 1);
+                --color-btn-primary-text: rgba(19, 52, 59, 1);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+            color: white;
+            padding: var(--space-24) var(--space-16);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: var(--space-8);
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            background-color: var(--color-surface);
+            border-bottom: 2px solid var(--color-border);
+            padding: 0 var(--space-16);
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-tab {
+            padding: var(--space-16) var(--space-20);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab:hover {
+            color: var(--color-primary);
+            background-color: var(--color-secondary);
+        }
+
+        .nav-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-24) var(--space-16);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            margin-bottom: var(--space-24);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: var(--space-16);
+            color: var(--color-text);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-16);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-8);
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--color-text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: 14px;
+            color: var(--color-text);
+            background-color: var(--color-surface);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(33, 128, 141, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: var(--space-12) var(--space-24);
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: var(--color-btn-primary-text);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-secondary-hover);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-16);
+            margin-bottom: var(--space-24);
+        }
+
+        .status-card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-card-border);
+            border-radius: var(--radius-base);
+            padding: var(--space-16);
+            text-align: center;
+        }
+
+        .status-card h3 {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-8);
+        }
+
+        .status-card p {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-available {
+            background-color: rgba(33, 128, 141, 0.15);
+            color: var(--color-success);
+        }
+
+        .status-unavailable {
+            background-color: rgba(192, 21, 47, 0.15);
+            color: var(--color-error);
+        }
+
+        .status-busy {
+            background-color: rgba(168, 75, 47, 0.15);
+            color: var(--color-warning);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--space-16);
+        }
+
+        .table th,
+        .table td {
+            padding: var(--space-12);
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .table th {
+            background-color: var(--color-secondary);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--color-text);
+        }
+
+        .table td {
+            font-size: 14px;
+        }
+
+        .table tr:hover {
+            background-color: var(--color-secondary);
+        }
+
+        .info-box {
+            background-color: var(--color-secondary);
+            border-left: 4px solid var(--color-primary);
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
+        }
+
+        .info-box h3 {
+            font-size: 16px;
+            margin-bottom: var(--space-8);
+        }
+
+        .info-box p {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        .row {
+            display: flex;
+            gap: var(--space-16);
+            margin-bottom: var(--space-16);
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        .alert {
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background-color: rgba(33, 128, 141, 0.15);
+            color: var(--color-success);
+            border: 1px solid rgba(33, 128, 141, 0.25);
+        }
+
+        .alert-error {
+            background-color: rgba(192, 21, 47, 0.15);
+            color: var(--color-error);
+            border: 1px solid rgba(192, 21, 47, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+
+            .table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loginSection">
+        <div class="header">
+            <h1>🏥 College Dispensary System <span style="font-weight: 400; font-size: 0.6em; opacity: 0.85;">by PixelPioneers</span></h1>
+            <p>Simplifying Healthcare Management for Students</p>
+        </div>
+        
+        <div class="login-container">
+            <div class="card">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">User Type</label>
+                        <select class="form-control" id="userType">
+                            <option value="student">Student</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Full Name (as registered)</label>
+                        <input type="text" class="form-control" id="username" placeholder="e.g., ANKIT KUMAR" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Registration Number</label>
+                        <input type="password" class="form-control" id="password" placeholder="e.g., 202400494" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainSection" style="display: none;">
+        <div class="header">
+            <h1>🏥 College Dispensary System <span style="font-weight: 400; font-size: 0.6em; opacity: 0.85;">by PixelPioneers</span></h1>
+            <p>Welcome, <span id="userWelcome"></span> | <a href="#" onclick="logout()" style="color: white;">Logout</a></p>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('dashboard')">Dashboard</button>
+            <button class="nav-tab" onclick="showSection('symptoms')">Enter Symptoms</button>
+            <button class="nav-tab" onclick="showSection('availability')">Availability</button>
+            <button class="nav-tab" onclick="showSection('location')">Room/Floor Info</button>
+            <button class="nav-tab" onclick="showSection('hospitals')">Nearby Hospitals</button>
+            <button class="nav-tab" onclick="showSection('prescriptions')">Prescriptions</button>
+            <button class="nav-tab" onclick="showSection('attendance')">Attendance</button>
+            <button class="nav-tab" onclick="showSection('billing')">Billing</button>
+            <button class="nav-tab" onclick="showSection('ai-diagnosis')">AI Health Assistant</button>
+        </nav>
+
+        <div class="container">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <div class="grid">
+                    <div class="status-card">
+                        <h3>Today's Visitors</h3>
+                        <p id="visitorsCount">24</p>
+                    </div>
+                    <div class="status-card">
+                        <h3>Available Doctors</h3>
+                        <p id="doctorsCount">3</p>
+                    </div>
+                    <div class="status-card">
+                        <h3>Medicines in Stock</h3>
+                        <p id="medicinesCount">156</p>
+                    </div>
+                    <div class="status-card">
+                        <h3>Appointments Today</h3>
+                        <p id="appointmentsCount">12</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Quick Actions</h2>
+                    <div class="row">
+                        <button class="btn btn-primary" onclick="showSection('symptoms')">Enter Symptoms</button>
+                        <button class="btn btn-secondary" onclick="showSection('availability')">Check Availability</button>
+                        <button class="btn btn-secondary" onclick="showSection('prescriptions')">View Prescriptions</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Recent Activity</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Activity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentActivity">
+                            <tr>
+                                <td>2025-11-04</td>
+                                <td>Check-up with Dr. Smith</td>
+                                <td><span class="status-badge status-available">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>2025-11-02</td>
+                                <td>Prescription: Paracetamol</td>
+                                <td><span class="status-badge status-available">Active</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Enter Symptoms Section -->
+            <div id="symptoms" class="content-section">
+                <div class="card">
+                    <h2>Enter Your Symptoms</h2>
+                    <form id="symptomsForm">
+                        <div class="form-group">
+                            <label class="form-label">Student ID</label>
+                            <input type="text" class="form-control" id="studentId" value="STU001" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Primary Symptoms</label>
+                            <select class="form-control" id="primarySymptom">
+                                <option>Fever</option>
+                                <option>Headache</option>
+                                <option>Cough</option>
+                                <option>Cold</option>
+                                <option>Body Pain</option>
+                                <option>Stomach Pain</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Describe Your Symptoms</label>
+                            <textarea class="form-control" id="symptomDescription" placeholder="Please describe your symptoms in detail..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Severity</label>
+                            <select class="form-control" id="severity">
+                                <option>Mild</option>
+                                <option>Moderate</option>
+                                <option>Severe</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Symptoms</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Availability Section -->
+            <div id="availability" class="content-section">
+                <div class="card">
+                    <h2>Doctor Availability</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Doctor Name</th>
+                                <th>Specialization</th>
+                                <th>Status</th>
+                                <th>Available Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dr. Sarah Smith</td>
+                                <td>General Physician</td>
+                                <td><span class="status-badge status-available">Available</span></td>
+                                <td>9:00 AM - 5:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Dr. John Doe</td>
+                                <td>Dermatologist</td>
+                                <td><span class="status-badge status-busy">Busy</span></td>
+                                <td>10:00 AM - 4:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Dr. Emily Brown</td>
+                                <td>Psychologist</td>
+                                <td><span class="status-badge status-available">Available</span></td>
+                                <td>11:00 AM - 6:00 PM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h2>Medicine Stock Availability</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Medicine Name</th>
+                                <th>Category</th>
+                                <th>Stock Quantity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Paracetamol 500mg</td>
+                                <td>Pain Relief</td>
+                                <td>500 tablets</td>
+                                <td><span class="status-badge status-available">In Stock</span></td>
+                            </tr>
+                            <tr>
+                                <td>Amoxicillin 250mg</td>
+                                <td>Antibiotic</td>
+                                <td>150 tablets</td>
+                                <td><span class="status-badge status-available">In Stock</span></td>
+                            </tr>
+                            <tr>
+                                <td>Cetirizine 10mg</td>
+                                <td>Allergy</td>
+                                <td>25 tablets</td>
+                                <td><span class="status-badge status-busy">Low Stock</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Room/Floor Info Section -->
+            <div id="location" class="content-section">
+                <div class="card">
+                    <h2>Room & Floor Information</h2>
+                    <div class="info-box">
+                        <h3>Dispensary Location</h3>
+                        <p><strong>Building:</strong> Medical Center Block A</p>
+                        <p><strong>Floor:</strong> Ground Floor</p>
+                        <p><strong>Room Number:</strong> 101-105</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Search Patient Location</label>
+                        <input type="text" class="form-control" id="patientSearch" placeholder="Enter patient ID to find location">
+                    </div>
+                    <button class="btn btn-primary" onclick="searchPatient()">Search Location</button>
+
+                    <div id="patientLocation" style="margin-top: var(--space-16); display: none;">
+                        <div class="info-box">
+                            <h3>Patient Location Found</h3>
+                            <p><strong>Patient ID:</strong> <span id="foundPatientId"></span></p>
+                            <p><strong>Building:</strong> <span id="foundBuilding"></span></p>
+                            <p><strong>Room Number:</strong> <span id="foundRoom"></span></p>
+                            <p><strong>Floor:</strong> <span id="foundFloor"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Facility Map</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Room No.</th>
+                                <th>Department</th>
+                                <th>Floor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>101</td>
+                                <td>Reception</td>
+                                <td>Ground Floor</td>
+                                <td><span class="status-badge status-available">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>102</td>
+                                <td>Consultation Room 1</td>
+                                <td>Ground Floor</td>
+                                <td><span class="status-badge status-busy">Occupied</span></td>
+                            </tr>
+                            <tr>
+                                <td>103</td>
+                                <td>Consultation Room 2</td>
+                                <td>Ground Floor</td>
+                                <td><span class="status-badge status-available">Available</span></td>
+                            </tr>
+                            <tr>
+                                <td>104</td>
+                                <td>Pharmacy</td>
+                                <td>Ground Floor</td>
+                                <td><span class="status-badge status-available">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>105</td>
+                                <td>Emergency Room</td>
+                                <td>Ground Floor</td>
+                                <td><span class="status-badge status-available">Available</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Nearby Hospitals Section -->
+            <div id="hospitals" class="content-section">
+                <div class="card">
+                    <h2>Nearby Hospitals & Emergency Services</h2>
+                    
+                    <div class="info-box" style="background-color: rgba(33, 128, 141, 0.1); border-left-color: var(--color-primary);">
+                        <h3>📍 Your Current Location</h3>
+                        <p id="userLocation">Detecting your location...</p>
+                        <button class="btn btn-secondary" onclick="getLocation()" style="margin-top: var(--space-8);">🔄 Refresh Location</button>
+                    </div>
+
+                    <div class="info-box">
+                        <h3>🚨 In case of emergency, contact this number immediately</h3>
+                        <p>Emergency Contact: <strong>03592-24621</strong></p>
+                    </div>
+
+                    <h3 style="margin-top: var(--space-24); margin-bottom: var(--space-16);">Nearby Facilities</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Facility Name</th>
+                                <th>Type</th>
+                                <th>Location</th>
+                                <th>Distance</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="facilitiesTable">
+                            <tr>
+                                <td><strong>Campus Dispensary</strong></td>
+                                <td><span class="status-badge" style="background-color: rgba(33, 128, 141, 0.15);">Dispensary</span></td>
+                                <td>Medical Center Block A, Ground Floor</td>
+                                <td id="distance0">Calculating...</td>
+                                <td>Campus: +1-555-1001</td>
+                                <td><span class="status-badge status-available">Open Now</span></td>
+                            </tr>
+                            <tr>
+                                <td>Central Referral Hospital</td>
+                                <td><span class="status-badge" style="background-color: rgba(192, 21, 47, 0.15);">Hospital</span></td>
+                                <td>5th Mile, Tadong, Gangtok, East Sikkim-737102</td>
+                                <td id="distance1">Calculating...</td>
+                                <td>Helpline: 1800-12-02114<br>Landline: 03592-232041</td>
+                                <td><span class="status-badge status-available">24/7 Available</span></td>
+                            </tr>
+                            <tr>
+                                <td>District Hospital Singtam</td>
+                                <td><span class="status-badge" style="background-color: rgba(192, 21, 47, 0.15);">Hospital</span></td>
+                                <td>NH 31A, Golitar/Singtam, East Sikkim-737134</td>
+                                <td id="distance2">Calculating...</td>
+                                <td>Phone: 8250757651<br>Alt: 03592-233575</td>
+                                <td><span class="status-badge status-available">24/7 Available</span></td>
+                            </tr>
+                            <tr>
+                                <td>Sikkim Medicos Diagnostic Centre</td>
+                                <td><span class="status-badge" style="background-color: rgba(168, 75, 47, 0.15);">Diagnostic</span></td>
+                                <td>Basement, ICICI Bank, Majitar, Rangpo, Sikkim-737136</td>
+                                <td id="distance3">Calculating...</td>
+                                <td>Contact for details</td>
+                                <td><span class="status-badge status-available">Open</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: var(--space-24);">
+                        <button class="btn btn-primary" onclick="openMapView()">🗺️ View on Map</button>
+                        <button class="btn btn-secondary" onclick="getDirections()">🧭 Get Directions to Nearest</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Contacts Section -->
+            <div id="contacts" class="content-section">
+                <div class="card">
+                    <h2>Emergency Contacts & Important Numbers</h2>
+                    
+                    <div class="info-box">
+                        <h3>🚨 Emergency Services</h3>
+                        <p><strong>Emergency (911):</strong> 911</p>
+                        <p><strong>Campus Security:</strong> +1-555-0100</p>
+                        <p><strong>Campus Ambulance:</strong> +1-555-0101</p>
+                    </div>
+
+                    <div class="card">
+                        <h2>Dispensary Staff Contacts</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Dr. Sarah Smith</td>
+                                    <td>Chief Medical Officer</td>
+                                    <td>+1-555-1001</td>
+                                    <td>sarah.smith@college.edu</td>
+                                </tr>
+                                <tr>
+                                    <td>Dr. John Doe</td>
+                                    <td>Physician</td>
+                                    <td>+1-555-1002</td>
+                                    <td>john.doe@college.edu</td>
+                                </tr>
+                                <tr>
+                                    <td>Nurse Lisa Johnson</td>
+                                    <td>Head Nurse</td>
+                                    <td>+1-555-1003</td>
+                                    <td>lisa.j@college.edu</td>
+                                </tr>
+                                <tr>
+                                    <td>Pharmacist Mike Brown</td>
+                                    <td>Pharmacy Manager</td>
+                                    <td>+1-555-1004</td>
+                                    <td>mike.brown@college.edu</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <h2>Important Phone Numbers</h2>
+                        <div class="grid">
+                            <div class="info-box">
+                                <h3>🚑 Ambulance Services</h3>
+                                <p>City Ambulance: +1-555-0200</p>
+                                <p>Campus Ambulance: +1-555-0101</p>
+                            </div>
+                            <div class="info-box">
+                                <h3>🏥 Pharmacies</h3>
+                                <p>Campus Pharmacy: +1-555-1004</p>
+                                <p>24/7 City Pharmacy: +1-555-0300</p>
+                            </div>
+                            <div class="info-box">
+                                <h3>💊 Poison Control</h3>
+                                <p>National: 1-800-222-1222</p>
+                                <p>Local: +1-555-0400</p>
+                            </div>
+                            <div class="info-box">
+                                <h3>🧠 Mental Health</h3>
+                                <p>Counseling Center: +1-555-1100</p>
+                                <p>Crisis Hotline: 1-800-273-8255</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prescriptions Section -->
+            <div id="prescriptions" class="content-section">
+                <div class="card">
+                    <h2>Your Prescriptions & Medical History</h2>
+                    <div class="form-group">
+                        <label class="form-label">Student ID</label>
+                        <input type="text" class="form-control" value="STU001" readonly>
+                    </div>
+
+                    <h3 style="margin-top: var(--space-24); margin-bottom: var(--space-16);">Active Prescriptions</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Medicine</th>
+                                <th>Dosage</th>
+                                <th>Duration</th>
+                                <th>Doctor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-11-02</td>
+                                <td>Paracetamol</td>
+                                <td>500mg, 3x daily</td>
+                                <td>5 days</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="status-badge status-available">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>2025-10-28</td>
+                                <td>Amoxicillin</td>
+                                <td>250mg, 2x daily</td>
+                                <td>7 days</td>
+                                <td>Dr. Doe</td>
+                                <td><span class="status-badge status-available">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="margin-top: var(--space-24); margin-bottom: var(--space-16);">Medical History</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Diagnosis</th>
+                                <th>Doctor</th>
+                                <th>Test Results</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-11-02</td>
+                                <td>Viral Fever</td>
+                                <td>Dr. Smith</td>
+                                <td>Blood Test - Normal</td>
+                            </tr>
+                            <tr>
+                                <td>2025-10-28</td>
+                                <td>Throat Infection</td>
+                                <td>Dr. Doe</td>
+                                <td>Culture Test - Bacterial</td>
+                            </tr>
+                            <tr>
+                                <td>2025-10-15</td>
+                                <td>Annual Check-up</td>
+                                <td>Dr. Smith</td>
+                                <td>All parameters normal</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div id="attendance" class="content-section">
+                <div class="card">
+                    <h2>Dispensary Visit Attendance Tracking</h2>
+                    
+                    <div class="grid">
+                        <div class="status-card">
+                            <h3>Total Visits This Month</h3>
+                            <p>8</p>
+                        </div>
+                        <div class="status-card">
+                            <h3>Last Visit</h3>
+                            <p style="font-size: 16px;">Nov 4, 2025</p>
+                        </div>
+                        <div class="status-card">
+                            <h3>Follow-ups Scheduled</h3>
+                            <p>2</p>
+                        </div>
+                        <div class="status-card">
+                            <h3>Missed Appointments</h3>
+                            <p>0</p>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: var(--space-24); margin-bottom: var(--space-16);">Visit History</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Visit Date</th>
+                                <th>Time</th>
+                                <th>Purpose</th>
+                                <th>Doctor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-11-04</td>
+                                <td>10:30 AM</td>
+                                <td>Follow-up Check-up</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="status-badge status-available">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>2025-11-02</td>
+                                <td>2:15 PM</td>
+                                <td>Fever Consultation</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="status-badge status-available">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>2025-10-28</td>
+                                <td>11:00 AM</td>
+                                <td>Throat Infection</td>
+                                <td>Dr. Doe</td>
+                                <td><span class="status-badge status-available">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>2025-10-15</td>
+                                <td>9:30 AM</td>
+                                <td>Annual Physical</td>
+                                <td>Dr. Smith</td>
+                                <td><span class="status-badge status-available">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="margin-top: var(--space-24); margin-bottom: var(--space-16);">Upcoming Follow-ups</h3>
+                    <div class="info-box">
+                        <h3>Next Appointment</h3>
+                        <p><strong>Date:</strong> November 12, 2025</p>
+                        <p><strong>Time:</strong> 10:00 AM</p>
+                        <p><strong>Doctor:</strong> Dr. Sarah Smith</p>
+                        <p><strong>Purpose:</strong> Follow-up for viral fever treatment</p>
+                    </div>
+                    <button class="btn btn-primary">Schedule New Appointment</button>
+                    <button class="btn btn-secondary">Send Reminder</button>
+                </div>
+            </div>
+
+            <!-- Billing Section -->
+            <div id="billing" class="content-section">
+                <div class="card">
+                    <h2>Billing & Payment Management</h2>
+                    
+                    <div class="grid">
+                        <div class="status-card">
+                            <h3>Total Outstanding</h3>
+                            <p style="font-size: 20px;">₹10,000.00</p>
+                        </div>
+                        <div class="status-card">
+                            <h3>Paid This Month</h3>
+                            <p style="font-size: 20px;">₹28,000.00</p>
+                        </div>
+                        <div class="status-card">
+                            <h3>Pending Bills</h3>
+                            <p>2</p>
+                        </div>
+                        <div class="status-card">
+                            <h3>Insurance Coverage</h3>
+                            <p style="font-size: 18px;">80%</p>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: var(--space-24); margin-bottom: var(--space-16);">Recent Bills</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Insurance</th>
+                                <th>Due Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BILL-2025-089</td>
+                                <td>2025-11-04</td>
+                                <td>Consultation & Medication</td>
+                                <td>₹6,000.00</td>
+                                <td>₹4,800.00</td>
+                                <td>₹1,200.00</td>
+                                <td><span class="status-badge status-busy">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>BILL-2025-088</td>
+                                <td>2025-11-02</td>
+                                <td>Blood Test & Consultation</td>
+                                <td>₹12,000.00</td>
+                                <td>₹9,600.00</td>
+                                <td>₹2,400.00</td>
+                                <td><span class="status-badge status-available">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <td>BILL-2025-075</td>
+                                <td>2025-10-28</td>
+                                <td>Throat Culture & Medicine</td>
+                                <td>₹16,000.00</td>
+                                <td>₹12,800.00</td>
+                                <td>₹3,200.00</td>
+                                <td><span class="status-badge status-available">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <td>BILL-2025-062</td>
+                                <td>2025-10-15</td>
+                                <td>Annual Physical Examination</td>
+                                <td>₹20,000.00</td>
+                                <td>₹16,000.00</td>
+                                <td>₹4,000.00</td>
+                                <td><span class="status-badge status-available">Paid</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: var(--space-24);">
+                        <h3 style="margin-bottom: var(--space-16);">Generate New Bill</h3>
+                        <form id="billingForm">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label">Student ID</label>
+                                        <input type="text" class="form-control" value="STU001" readonly>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label">Service Date</label>
+                                        <input type="date" class="form-control" value="2025-11-05">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Service Description</label>
+                                <input type="text" class="form-control" placeholder="e.g., Consultation, Medication, Tests">
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label">Total Amount (₹)</label>
+                                        <input type="number" class="form-control" placeholder="0.00" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label class="form-label">Insurance Coverage (₹)</label>
+                                        <input type="number" class="form-control" placeholder="0.00" step="0.01">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Generate Bill</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Dietary Instructions</h2>
+                    <div class="info-box">
+                        <h3>Current Dietary Plan</h3>
+                        <p><strong>Prescribed by:</strong> Dr. Sarah Smith</p>
+                        <p><strong>Date:</strong> November 2, 2025</p>
+                        <p><strong>Duration:</strong> 7 days</p>
+                    </div>
+                    <h3 style="margin-bottom: var(--space-16);">Instructions:</h3>
+                    <ul style="margin-left: var(--space-24); margin-bottom: var(--space-16);">
+                        <li>Drink plenty of fluids (8-10 glasses of water daily)</li>
+                        <li>Avoid spicy and oily foods</li>
+                        <li>Include fresh fruits and vegetables</li>
+                        <li>Take medicines after meals</li>
+                        <li>Get adequate rest (7-8 hours sleep)</li>
+                        <li>Avoid caffeine and carbonated drinks</li>
+                    </ul>
+                    <button class="btn btn-secondary">Download Diet Plan</button>
+                </div>
+            </div>
+
+            <!-- AI Health Assistant Section -->
+            <div id="ai-diagnosis" class="content-section">
+                <div class="card">
+                    <h2>🤖 AI Health Assistant</h2>
+                    <p style="color: var(--color-text-secondary); margin-bottom: var(--space-24);">
+                        Get instant insights about your symptoms and potential conditions. This AI assistant can help you understand your health concerns better.
+                    </p>
+
+                    <div class="info-box" style="background-color: rgba(168, 75, 47, 0.1); border-left-color: var(--color-warning);">
+                        <h3>⚠️ Important Notice</h3>
+                        <p>This AI assistant provides general information only and should not replace professional medical advice. Always consult with a doctor for proper diagnosis and treatment.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Describe Your Symptoms</label>
+                        <textarea class="form-control" id="aiSymptomInput" placeholder="Example: I have a fever of 101°F, headache, and body pain for 2 days..." style="min-height: 120px;"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="analyzeSymptoms()" id="analyzeBtn">
+                        🔍 Analyze Symptoms
+                    </button>
+
+                    <div id="aiResponse" style="display: none; margin-top: var(--space-24);">
+                        <div class="card" style="background-color: var(--color-secondary); border: 2px solid var(--color-primary);">
+                            <h3 style="color: var(--color-primary); margin-bottom: var(--space-16);">AI Analysis Result</h3>
+                            
+                            <div style="margin-bottom: var(--space-16);">
+                                <strong style="color: var(--color-text);">Possible Condition:</strong>
+                                <p id="aiCondition" style="font-size: 18px; color: var(--color-primary); font-weight: 600; margin-top: var(--space-8);"></p>
+                            </div>
+
+                            <div style="margin-bottom: var(--space-16);">
+                                <strong style="color: var(--color-text);">Confidence Level:</strong>
+                                <div style="margin-top: var(--space-8);">
+                                    <div style="background-color: var(--color-border); height: 24px; border-radius: var(--radius-base); overflow: hidden;">
+                                        <div id="confidenceBar" style="background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover)); height: 100%; width: 0%; transition: width 1s ease;"></div>
+                                    </div>
+                                    <p id="confidenceText" style="margin-top: var(--space-4); font-weight: 600;"></p>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: var(--space-16);">
+                                <strong style="color: var(--color-text);">Common Symptoms:</strong>
+                                <ul id="commonSymptoms" style="margin-left: var(--space-24); margin-top: var(--space-8); color: var(--color-text-secondary);"></ul>
+                            </div>
+
+                            <div style="margin-bottom: var(--space-16);">
+                                <strong style="color: var(--color-text);">Recommended Actions:</strong>
+                                <ul id="recommendations" style="margin-left: var(--space-24); margin-top: var(--space-8); color: var(--color-text-secondary);"></ul>
+                            </div>
+
+                            <div style="margin-bottom: var(--space-16);">
+                                <strong style="color: var(--color-text);">Home Remedies:</strong>
+                                <ul id="homeRemedies" style="margin-left: var(--space-24); margin-top: var(--space-8); color: var(--color-text-secondary);"></ul>
+                            </div>
+
+                            <div style="margin-bottom: var(--space-16);">
+                                <strong style="color: var(--color-text);">When to See a Doctor:</strong>
+                                <ul id="warningSign" style="margin-left: var(--space-24); margin-top: var(--space-8); color: var(--color-error); font-weight: 500;"></ul>
+                            </div>
+
+                            <div class="row" style="margin-top: var(--space-24);">
+                                <button class="btn btn-primary" onclick="bookAppointment()">📅 Book Appointment with Doctor</button>
+                                <button class="btn btn-secondary" onclick="saveAnalysis()">💾 Save Analysis to Records</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: var(--space-32);">
+                        <h3 style="margin-bottom: var(--space-16);">Common Health Queries</h3>
+                        <div class="grid">
+                            <button class="btn btn-secondary" onclick="quickQuery('fever and headache')">🤒 Fever & Headache</button>
+                            <button class="btn btn-secondary" onclick="quickQuery('stomach pain and nausea')">🤢 Stomach Issues</button>
+                            <button class="btn btn-secondary" onclick="quickQuery('cough and cold')">🤧 Cough & Cold</button>
+                            <button class="btn btn-secondary" onclick="quickQuery('body pain and fatigue')">😫 Body Pain & Fatigue</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Previous AI Consultations</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Symptoms Entered</th>
+                                <th>AI Diagnosis</th>
+                                <th>Action Taken</th>
+                            </tr>
+                        </thead>
+                        <tbody id="aiHistoryTable">
+                            <tr>
+                                <td>2025-11-03</td>
+                                <td>Headache, dizziness</td>
+                                <td>Tension Headache</td>
+                                <td><span class="status-badge status-available">Self-care followed</span></td>
+                            </tr>
+                            <tr>
+                                <td>2025-10-28</td>
+                                <td>Sore throat, fever</td>
+                                <td>Throat Infection</td>
+                                <td><span class="status-badge status-available">Doctor consulted</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        // Authorized users database
+        const authorizedUsers = {
+            'ANKIT KUMAR': '202400494',
+            'SWAPNEEL POLLEY': '202400179',
+            'PRATHISTHA PRADHAN': '202400006',
+            'TIARI NOATIA': '202400431',
+            'BIJETRI DAS': '202400365'
+        };
+
+        // Login handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.toUpperCase();
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+            
+            // Check if user is authorized
+            if (authorizedUsers[username] && authorizedUsers[username] === password) {
+                currentUser = {
+                    username: username,
+                    type: userType
+                };
+                
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('mainSection').style.display = 'block';
+                document.getElementById('userWelcome').textContent = username + ' (' + userType.charAt(0).toUpperCase() + userType.slice(1) + ')';
+            } else {
+                // Show error message
+                const existingAlert = document.querySelector('.alert-error');
+                if (existingAlert) {
+                    existingAlert.remove();
+                }
+                
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-error';
+                alertDiv.textContent = '✗ Invalid credentials. Access denied. Please check your name and registration number.';
+                
+                const form = document.getElementById('loginForm');
+                form.insertBefore(alertDiv, form.firstChild);
+                
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 5000);
+            }
+        });
+
+        // Logout
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                currentUser = null;
+                document.getElementById('mainSection').style.display = 'none';
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            }
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Symptoms form submission
+        document.getElementById('symptomsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const symptom = document.getElementById('primarySymptom').value;
+            const description = document.getElementById('symptomDescription').value;
+            const severity = document.getElementById('severity').value;
+            
+            if (description) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success';
+                alertDiv.textContent = '✓ Your symptoms have been recorded successfully. A doctor will review them shortly.';
+                
+                const form = document.getElementById('symptomsForm');
+                form.insertBefore(alertDiv, form.firstChild);
+                
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 5000);
+                
+                document.getElementById('symptomDescription').value = '';
+            }
+        });
+
+        // Billing form submission
+        document.getElementById('billingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success';
+            alertDiv.textContent = '✓ Bill generated successfully. Bill ID: BILL-2025-' + Math.floor(Math.random() * 1000);
+            
+            const form = document.getElementById('billingForm');
+            const card = form.closest('.card');
+            card.insertBefore(alertDiv, card.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+            
+            e.target.reset();
+        });
+
+        // Patient location search
+        function searchPatient() {
+            const patientId = document.getElementById('patientSearch').value;
+            const locationDiv = document.getElementById('patientLocation');
+            
+            if (patientId) {
+                // Mock patient data
+                const patients = {
+                    'STU001': { building: 'Hostel Block B', room: '205', floor: '2nd Floor' },
+                    'STU002': { building: 'Hostel Block A', room: '312', floor: '3rd Floor' },
+                    'STU003': { building: 'Hostel Block C', room: '108', floor: '1st Floor' }
+                };
+                
+                if (patients[patientId]) {
+                    document.getElementById('foundPatientId').textContent = patientId;
+                    document.getElementById('foundBuilding').textContent = patients[patientId].building;
+                    document.getElementById('foundRoom').textContent = patients[patientId].room;
+                    document.getElementById('foundFloor').textContent = patients[patientId].floor;
+                    locationDiv.style.display = 'block';
+                } else {
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-error';
+                    alertDiv.textContent = '✗ Patient ID not found in the system.';
+                    
+                    const card = document.querySelector('#location .card');
+                    card.appendChild(alertDiv);
+                    
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 3000);
+                    
+                    locationDiv.style.display = 'none';
+                }
+            }
+        }
+
+        // Update visitor count dynamically (simulation)
+        function updateDashboardStats() {
+            const visitors = document.getElementById('visitorsCount');
+            const currentCount = parseInt(visitors.textContent);
+            if (Math.random() > 0.7) {
+                visitors.textContent = currentCount + 1;
+            }
+        }
+
+        setInterval(updateDashboardStats, 30000); // Update every 30 seconds
+
+        // Location Tracking Functions
+        let userCoordinates = null;
+        
+        // Facility coordinates (approximate Sikkim locations)
+        const facilities = [
+            { name: 'Campus Dispensary', lat: 27.3389, lon: 88.6065 }, // Approximate campus location
+            { name: 'Central Referral Hospital', lat: 27.3314, lon: 88.6138 },
+            { name: 'District Hospital Singtam', lat: 27.2333, lon: 88.5167 },
+            { name: 'Sikkim Medicos Diagnostic Centre', lat: 27.1667, lon: 88.5333 }
+        ];
+
+        function getLocation() {
+            const locationText = document.getElementById('userLocation');
+            
+            if (navigator.geolocation) {
+                locationText.textContent = 'Detecting your location...';
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        userCoordinates = {
+                            lat: position.coords.latitude,
+                            lon: position.coords.longitude
+                        };
+                        
+                        locationText.innerHTML = `
+                            <strong>Latitude:</strong> ${userCoordinates.lat.toFixed(4)}°<br>
+                            <strong>Longitude:</strong> ${userCoordinates.lon.toFixed(4)}°<br>
+                            <span style="color: var(--color-success);">✓ Location detected successfully</span>
+                        `;
+                        
+                        calculateDistances();
+                    },
+                    function(error) {
+                        let errorMsg = '';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMsg = '❌ Location access denied. Please enable location services in your browser.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMsg = '❌ Location information unavailable.';
+                                break;
+                            case error.TIMEOUT:
+                                errorMsg = '❌ Location request timed out.';
+                                break;
+                            default:
+                                errorMsg = '❌ An unknown error occurred.';
+                        }
+                        locationText.innerHTML = errorMsg;
+                        
+                        // Use default location (approximate Sikkim college area)
+                        userCoordinates = { lat: 27.3389, lon: 88.6065 };
+                        setTimeout(() => {
+                            locationText.innerHTML += '<br><br><strong>Using default campus location for distance calculation.</strong>';
+                            calculateDistances();
+                        }, 2000);
+                    }
+                );
+            } else {
+                locationText.textContent = '❌ Geolocation is not supported by your browser.';
+                // Use default location
+                userCoordinates = { lat: 27.3389, lon: 88.6065 };
+                setTimeout(() => {
+                    locationText.innerHTML += '<br><br><strong>Using default campus location.</strong>';
+                    calculateDistances();
+                }, 2000);
+            }
+        }
+
+        function calculateDistances() {
+            if (!userCoordinates) return;
+            
+            facilities.forEach((facility, index) => {
+                const distance = calculateDistance(
+                    userCoordinates.lat,
+                    userCoordinates.lon,
+                    facility.lat,
+                    facility.lon
+                );
+                
+                const distanceElement = document.getElementById(`distance${index}`);
+                if (distanceElement) {
+                    if (distance < 1) {
+                        distanceElement.innerHTML = `<strong style="color: var(--color-success);">${(distance * 1000).toFixed(0)} meters</strong>`;
+                    } else {
+                        distanceElement.innerHTML = `<strong style="color: var(--color-primary);">${distance.toFixed(1)} km</strong>`;
+                    }
+                }
+            });
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            // Haversine formula for calculating distance between two coordinates
+            const R = 6371; // Radius of Earth in kilometers
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distance = R * c;
+            return distance;
+        }
+
+        function openMapView() {
+            if (userCoordinates) {
+                // Open Google Maps with user location
+                const url = `https://www.google.com/maps/search/hospitals+near+me/@${userCoordinates.lat},${userCoordinates.lon},13z`;
+                window.open(url, '_blank');
+            } else {
+                alert('Please allow location access first.');
+            }
+        }
+
+        function getDirections() {
+            if (!userCoordinates) {
+                alert('Please allow location access first.');
+                return;
+            }
+            
+            // Find nearest facility
+            let nearestIndex = 0;
+            let minDistance = Infinity;
+            
+            facilities.forEach((facility, index) => {
+                const distance = calculateDistance(
+                    userCoordinates.lat,
+                    userCoordinates.lon,
+                    facility.lat,
+                    facility.lon
+                );
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearestIndex = index;
+                }
+            });
+            
+            const nearest = facilities[nearestIndex];
+            const url = `https://www.google.com/maps/dir/${userCoordinates.lat},${userCoordinates.lon}/${nearest.lat},${nearest.lon}`;
+            window.open(url, '_blank');
+        }
+
+        // Auto-detect location when hospitals section is opened
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                getLocation();
+            }, 1000);
+        });
+
+        // AI Health Assistant Functions
+        const diseaseDatabase = {
+            'fever': {
+                conditions: ['Viral Fever', 'Bacterial Infection', 'Influenza'],
+                symptoms: ['High temperature (>100°F)', 'Chills', 'Sweating', 'Body aches', 'Fatigue'],
+                recommendations: [
+                    'Take rest and stay hydrated',
+                    'Monitor temperature regularly',
+                    'Take paracetamol if temperature exceeds 101°F',
+                    'Avoid contact with others to prevent spread'
+                ],
+                remedies: [
+                    'Drink plenty of fluids (water, herbal tea)',
+                    'Apply cold compress on forehead',
+                    'Take lukewarm bath to reduce temperature',
+                    'Eat light, nutritious food'
+                ],
+                warning: [
+                    'Temperature above 103°F',
+                    'Fever lasting more than 3 days',
+                    'Difficulty breathing',
+                    'Severe headache or stiff neck'
+                ]
+            },
+            'headache': {
+                conditions: ['Tension Headache', 'Migraine', 'Sinus Headache'],
+                symptoms: ['Pain in head region', 'Pressure sensation', 'Light sensitivity', 'Nausea'],
+                recommendations: [
+                    'Rest in a quiet, dark room',
+                    'Apply cold or warm compress',
+                    'Practice relaxation techniques',
+                    'Stay hydrated'
+                ],
+                remedies: [
+                    'Drink plenty of water',
+                    'Apply peppermint oil on temples',
+                    'Practice deep breathing exercises',
+                    'Maintain regular sleep schedule'
+                ],
+                warning: [
+                    'Sudden, severe headache',
+                    'Headache with vision changes',
+                    'Headache after head injury',
+                    'Headache with fever and stiff neck'
+                ]
+            },
+            'cough': {
+                conditions: ['Common Cold', 'Bronchitis', 'Allergic Reaction'],
+                symptoms: ['Persistent coughing', 'Throat irritation', 'Mucus production', 'Chest discomfort'],
+                recommendations: [
+                    'Stay hydrated',
+                    'Use humidifier in room',
+                    'Avoid irritants and smoke',
+                    'Get adequate rest'
+                ],
+                remedies: [
+                    'Drink warm water with honey and lemon',
+                    'Gargle with salt water',
+                    'Inhale steam',
+                    'Have ginger tea'
+                ],
+                warning: [
+                    'Cough lasting more than 2 weeks',
+                    'Coughing up blood',
+                    'High fever with cough',
+                    'Difficulty breathing'
+                ]
+            },
+            'stomach': {
+                conditions: ['Gastritis', 'Food Poisoning', 'Indigestion'],
+                symptoms: ['Abdominal pain', 'Nausea', 'Vomiting', 'Bloating', 'Loss of appetite'],
+                recommendations: [
+                    'Avoid spicy and oily foods',
+                    'Eat small, frequent meals',
+                    'Stay hydrated with ORS',
+                    'Rest and avoid stress'
+                ],
+                remedies: [
+                    'Drink ginger tea',
+                    'Eat plain rice or toast',
+                    'Have buttermilk or yogurt',
+                    'Apply warm compress on stomach'
+                ],
+                warning: [
+                    'Severe abdominal pain',
+                    'Blood in vomit or stool',
+                    'Signs of dehydration',
+                    'Pain lasting more than 24 hours'
+                ]
+            },
+            'body pain': {
+                conditions: ['Muscle Strain', 'Viral Infection', 'Fatigue'],
+                symptoms: ['Muscle aches', 'Joint pain', 'Stiffness', 'Weakness', 'Fatigue'],
+                recommendations: [
+                    'Rest and avoid strenuous activity',
+                    'Apply hot or cold compress',
+                    'Stay hydrated',
+                    'Get adequate sleep'
+                ],
+                remedies: [
+                    'Take warm bath with Epsom salt',
+                    'Gentle stretching exercises',
+                    'Massage affected areas',
+                    'Drink turmeric milk before bed'
+                ],
+                warning: [
+                    'Severe pain that worsens',
+                    'Pain with fever and rash',
+                    'Numbness or tingling',
+                    'Pain after injury'
+                ]
+            }
+        };
+
+        function analyzeSymptoms() {
+            const input = document.getElementById('aiSymptomInput').value.toLowerCase();
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            
+            if (!input.trim()) {
+                alert('Please describe your symptoms first.');
+                return;
+            }
+
+            // Show loading state
+            analyzeBtn.textContent = '🔄 Analyzing...';
+            analyzeBtn.disabled = true;
+
+            // Simulate AI processing delay
+            setTimeout(() => {
+                // Detect keywords in input
+                let matchedCondition = null;
+                let matchScore = 0;
+
+                for (let key in diseaseDatabase) {
+                    if (input.includes(key)) {
+                        matchedCondition = diseaseDatabase[key];
+                        matchScore = 75 + Math.floor(Math.random() * 20);
+                        break;
+                    }
+                }
+
+                // Default to fever if no match
+                if (!matchedCondition) {
+                    matchedCondition = diseaseDatabase['fever'];
+                    matchScore = 60 + Math.floor(Math.random() * 15);
+                }
+
+                // Display results
+                displayAIResults(matchedCondition, matchScore);
+
+                // Reset button
+                analyzeBtn.textContent = '🔍 Analyze Symptoms';
+                analyzeBtn.disabled = false;
+
+                // Add to history
+                addToAIHistory(input, matchedCondition.conditions[0]);
+            }, 2000);
+        }
+
+        function displayAIResults(condition, confidence) {
+            const responseDiv = document.getElementById('aiResponse');
+            responseDiv.style.display = 'block';
+            responseDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // Set condition
+            document.getElementById('aiCondition').textContent = condition.conditions[0];
+
+            // Set confidence bar
+            const confidenceBar = document.getElementById('confidenceBar');
+            const confidenceText = document.getElementById('confidenceText');
+            setTimeout(() => {
+                confidenceBar.style.width = confidence + '%';
+            }, 100);
+            confidenceText.textContent = confidence + '% Confidence';
+
+            // Set symptoms
+            const symptomsList = document.getElementById('commonSymptoms');
+            symptomsList.innerHTML = '';
+            condition.symptoms.forEach(symptom => {
+                const li = document.createElement('li');
+                li.textContent = symptom;
+                symptomsList.appendChild(li);
+            });
+
+            // Set recommendations
+            const recommendationsList = document.getElementById('recommendations');
+            recommendationsList.innerHTML = '';
+            condition.recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                recommendationsList.appendChild(li);
+            });
+
+            // Set home remedies
+            const remediesList = document.getElementById('homeRemedies');
+            remediesList.innerHTML = '';
+            condition.remedies.forEach(remedy => {
+                const li = document.createElement('li');
+                li.textContent = remedy;
+                remediesList.appendChild(li);
+            });
+
+            // Set warning signs
+            const warningList = document.getElementById('warningSign');
+            warningList.innerHTML = '';
+            condition.warning.forEach(warning => {
+                const li = document.createElement('li');
+                li.textContent = warning;
+                warningList.appendChild(li);
+            });
+        }
+
+        function quickQuery(query) {
+            document.getElementById('aiSymptomInput').value = query;
+            analyzeSymptoms();
+        }
+
+        function bookAppointment() {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success';
+            alertDiv.textContent = '✓ Appointment request sent. You will be notified once confirmed.';
+            
+            document.getElementById('ai-diagnosis').insertBefore(alertDiv, document.getElementById('ai-diagnosis').firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function saveAnalysis() {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success';
+            alertDiv.textContent = '✓ AI analysis saved to your medical records.';
+            
+            document.getElementById('ai-diagnosis').insertBefore(alertDiv, document.getElementById('ai-diagnosis').firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function addToAIHistory(symptoms, diagnosis) {
+            const table = document.getElementById('aiHistoryTable');
+            const newRow = table.insertRow(0);
+            
+            const today = new Date().toISOString().split('T')[0];
+            
+            newRow.innerHTML = `
+                <td>${today}</td>
+                <td>${symptoms.substring(0, 50)}...</td>
+                <td>${diagnosis}</td>
+                <td><span class="status-badge status-busy">Just analyzed</span></td>
+            `;
+        }
+    </script>
+</body>
+</html>
